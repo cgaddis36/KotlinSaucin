@@ -30,4 +30,15 @@ class HotSauceController(private val hotSauceRepository: HotSauceRepository) {
             HttpStatus.OK
         )
     }
+    @GetMapping("/count")
+    fun getCount(): ResponseEntity<Long> = ResponseEntity(hotSauceRepository.count(),
+        HttpStatus.OK)
+    @GetMapping("/{id}")
+    fun getHotSauce(@PathVariable id: Long): ResponseEntity<Optional<HotSauce>> {
+        if (hotSauceRepository.existsById(id)) {
+            return ResponseEntity(hotSauceRepository.findById(id), HttpStatus.OK)
+        } else {
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
 }
