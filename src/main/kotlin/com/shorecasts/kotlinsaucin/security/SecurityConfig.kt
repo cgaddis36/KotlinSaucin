@@ -39,7 +39,9 @@ import org.springframework.security.web.SecurityFilterChain
                 .authorizeRequests(
                     Customizer { authorizeRequests: ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry ->
                         authorizeRequests
-                            .anyRequest().authenticated()
+                            .requestMatchers("/api/hotsauces/count").permitAll()
+                            .requestMatchers("/api/hotsauces").authenticated()
+                            .requestMatchers("/api/hotsauces/*").authenticated()
                     }
                 )
                 .oauth2ResourceServer { oauth2ResourceServer: OAuth2ResourceServerConfigurer<HttpSecurity?> ->
