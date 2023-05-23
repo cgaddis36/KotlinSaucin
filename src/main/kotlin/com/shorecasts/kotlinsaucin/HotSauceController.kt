@@ -41,4 +41,37 @@ class HotSauceController(private val hotSauceRepository: HotSauceRepository) {
             return ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
+
+    @PostMapping()
+    fun createHotSauce(@RequestBody hotSauce: HotSauce): ResponseEntity<HotSauce> {
+        return ResponseEntity(hotSauceRepository.save(hotSauce), HttpStatus.CREATED)
+    }
+
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long, @RequestBody sauceChanges: HotSauce): ResponseEntity<HotSauce?> {
+        if (hotSauceRepository.existsById(id)) {
+            val ogSauce = hotSauceRepository.findById(id).get()
+            val newerSauce = HotSauce(
+                id = id,
+                brandName = if (sauceChanges.brandName != "") sauceChanges.brandName else ogSauce.brandName,
+                sauceName = if (sauceChanges.sauceName != "") sauceChanges.sauceName else ogSauce.sauceName,
+                description = if (sauceChanges.description != "") sauceChanges.description else ogSauce.description,
+                url = if (sauceChanges.url != "") sauceChanges.url else ogSauce.url,
+                heat = if (sauceChanges.heat != 0) sauceChanges.heat else ogSauce.heat,
+                )
+            return ResponseEntity(hotSauceRepository.save(newerSauce), HttpStatus.OK)
+        } else {
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteHotSauce(@PathVariable id: Long): ResponseEntity<HotSauce?> {
+        if (hotSauceRepository.existsById(id)) {
+            hotSauceRepository.deleteById(id)
+            return ResponseEntity(HttpStatus.NO_CONTENT)
+        } else {
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
 }
