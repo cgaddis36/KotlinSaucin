@@ -6,13 +6,13 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class HotSauce(
-               var sauceName: String = "",
-               var brandName: String = "",
-               var description: String = "",
-               var url: String = "",
-               var heat: Int = 0,
-               ) {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long = 0
+data class HotSauce(
+            @Id @GeneratedValue(strategy = GenerationType.AUTO)
+            val id: Long = 0,
+            var sauceName: String = "",
+            var brandName: String = "",
+            var description: String = "",
+            var url: String = "",
+            var heat: Int = 0,
+           ) {
 }
